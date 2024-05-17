@@ -21,14 +21,13 @@ export class CreateBookDto {
   @IsNotEmpty()
   @IsNotEmpty()
   rentablestock: number;
+
+  @IsNotEmpty()
+  price: number;
 }
 
 export class UpdateBookDto {
-  @IsNotEmpty()
-  @IsNotEmpty()
   saleblestock: number;
-
-  @IsNotEmpty()
-  @IsNotEmpty()
   rentablestock: number;
+  price: number;
 }

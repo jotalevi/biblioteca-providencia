@@ -10,17 +10,15 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import configuration from "./domain/config/configuration";
 import DatabaseLogger from "./infrastructure/tools/logger/database-logger";
 
-// guards
-import { AuthGuard } from "./infrastructure/guards/auth.guard";
-import { RolesGuard } from "./infrastructure/guards/roles.guard";
-
 // entities
 import { AuthortEntity } from "./application/author/author.entity";
-import { BooktEntity } from "./application/book/book.entity";
+import { BookEntity } from "./application/book/book.entity";
+import { SaleEntity } from "./application/sale/sale.entity";
 
 // modules
 import { AuthorModule } from "./application/author/author.module";
 import { BookModule } from "./application/book/book.module";
+import { SaleModule } from "./application/sale/sale.module";
 
 const getLogTransport = () => {
   if (process.env.NODE_ENV === "production") {
@@ -64,7 +62,7 @@ const getLogTransport = () => {
         password: configService.get("postgres.password"),
         database: configService.get("postgres.database"),
         namingStrategy: new SnakeNamingStrategy(),
-        entities: [AuthortEntity, BooktEntity],
+        entities: [AuthortEntity, BookEntity, SaleEntity],
         synchronize: false,
         extra: {
           query_timeout: 10000,
@@ -76,17 +74,9 @@ const getLogTransport = () => {
     }),
     AuthorModule,
     BookModule,
+    SaleModule,
   ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

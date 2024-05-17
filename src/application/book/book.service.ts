@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { Repository, Like } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CreateBookDto, UpdateBookDto } from "./book.dto";
-import { BooktEntity } from "./book.entity";
+import { BookEntity } from "./book.entity";
 import { AuthortEntity } from "../author/author.entity";
 
 @Injectable()
@@ -10,13 +10,13 @@ export class BookService {
   private readonly logger = new Logger(BookService.name);
 
   constructor(
-    @InjectRepository(BooktEntity)
-    private bookRepository: Repository<BooktEntity>,
+    @InjectRepository(BookEntity)
+    private bookRepository: Repository<BookEntity>,
     @InjectRepository(AuthortEntity)
     private authorRepository: Repository<AuthortEntity>
   ) {}
 
-  async create(createBookDto: CreateBookDto): Promise<BooktEntity> {
+  async create(createBookDto: CreateBookDto): Promise<BookEntity> {
     try {
       let author = await this.authorRepository.findOne({
         where: { id: createBookDto.author },
@@ -25,12 +25,13 @@ export class BookService {
         throw new NotFoundException("Author not found");
       }
 
-      let book = new BooktEntity();
+      let book = new BookEntity();
       book.title = createBookDto.title;
       book.author = author;
       book.releasedate = createBookDto.releasedate;
       book.saleblestock = createBookDto.saleblestock;
       book.rentablestock = createBookDto.rentablestock;
+      book.price = createBookDto.price;
 
       return await this.bookRepository.save(book);
     } catch (err) {
@@ -42,7 +43,7 @@ export class BookService {
   async update(
     id: string,
     updateAuthorDto: UpdateBookDto
-  ): Promise<BooktEntity> {
+  ): Promise<BookEntity> {
     try {
       let found = await this.bookRepository.findOne({
         where: { id },
@@ -53,6 +54,7 @@ export class BookService {
 
       found.saleblestock = updateAuthorDto.saleblestock;
       found.rentablestock = updateAuthorDto.rentablestock;
+      found.price = updateAuthorDto.price;
 
       return await this.bookRepository.save(found);
     } catch (err) {
@@ -61,7 +63,7 @@ export class BookService {
     }
   }
 
-  async findQuery(limit: number, query: string): Promise<BooktEntity[]> {
+  async findQuery(limit: number, query: string): Promise<BookEntity[]> {
     try {
       let found = this.bookRepository.find({
         where: [
@@ -85,7 +87,7 @@ export class BookService {
     }
   }
 
-  async findOne(id: string): Promise<BooktEntity> {
+  async findOne(id: string): Promise<BookEntity> {
     try {
       const found = await this.bookRepository.findOne({
         where: { id: id },

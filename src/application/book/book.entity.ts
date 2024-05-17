@@ -5,11 +5,13 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   ManyToOne,
+  ManyToMany,
 } from "typeorm";
 import { AuthortEntity } from "../author/author.entity";
+import { SaleEntity } from "../sale/sale.entity";
 
 @Entity("book")
-export class BooktEntity {
+export class BookEntity {
   @ApiProperty({
     description: "Author ID",
     example: "64c3fd4fff78c94f7340c62e",
@@ -48,6 +50,20 @@ export class BooktEntity {
     example: 13,
   })
   rentablestock: number;
+
+  @ApiProperty({
+    description: "the price of the book in CLP",
+    example: 13990,
+  })
+  price: number;
+
+  @ApiProperty({
+    description: "Sales this book appeers in",
+    type: () => SaleEntity,
+  })
+  @ManyToMany(() => SaleEntity, (sale) => sale.books, { cascade: true })
+  @JoinColumn({ name: "sales" })
+  sales: SaleEntity[];
 
   @ApiProperty({
     description: "Timestamp date when the book was created",
