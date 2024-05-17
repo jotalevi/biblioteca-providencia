@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { BooktEntity } from "../book/book.entity";
 
 @Entity("author")
 export class AuthortEntity {
@@ -41,7 +42,14 @@ export class AuthortEntity {
   active: boolean;
 
   @ApiProperty({
-    description: "Timestamp date when the post was created",
+    description: "Books",
+    example: "...",
+  })
+  @OneToMany(() => BooktEntity, (book) => book.author)
+  books: BooktEntity[];
+
+  @ApiProperty({
+    description: "Timestamp date when the author was created",
     example: "1691106913",
   })
   @Column({
@@ -51,7 +59,7 @@ export class AuthortEntity {
   createdAt: Date;
 
   @ApiProperty({
-    description: "Timestamp date when the post was updated",
+    description: "Timestamp date when the author was updated",
     example: "1691106913",
   })
   @Column({

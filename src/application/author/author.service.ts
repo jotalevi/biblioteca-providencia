@@ -65,7 +65,7 @@ export class AuthorService {
     firstname: string | undefined,
     lastname: string | undefined,
     tags: string | undefined
-  ) {
+  ): Promise<AuthortEntity[]> {
     try {
       let findParams = [];
       if (writtenname)
@@ -86,7 +86,7 @@ export class AuthorService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<AuthortEntity> {
     try {
       const found = await this.authorRepository.findOne({
         where: { id: id },

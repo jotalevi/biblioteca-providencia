@@ -16,9 +16,11 @@ import { RolesGuard } from "./infrastructure/guards/roles.guard";
 
 // entities
 import { AuthortEntity } from "./application/author/author.entity";
+import { BooktEntity } from "./application/book/book.entity";
 
 // modules
 import { AuthorModule } from "./application/author/author.module";
+import { BookModule } from "./application/book/book.module";
 
 const getLogTransport = () => {
   if (process.env.NODE_ENV === "production") {
@@ -62,7 +64,7 @@ const getLogTransport = () => {
         password: configService.get("postgres.password"),
         database: configService.get("postgres.database"),
         namingStrategy: new SnakeNamingStrategy(),
-        entities: [AuthortEntity],
+        entities: [AuthortEntity, BooktEntity],
         synchronize: false,
         extra: {
           query_timeout: 10000,
@@ -73,6 +75,7 @@ const getLogTransport = () => {
       inject: [ConfigService],
     }),
     AuthorModule,
+    BookModule,
   ],
   providers: [
     {
