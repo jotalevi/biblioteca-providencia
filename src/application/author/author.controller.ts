@@ -1,5 +1,14 @@
 import { ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from "@nestjs/common";
 import { AuthorService } from "./author.service";
 import { CreateAuthorDto, UpdateAuthorDto } from "./author.dto";
 
@@ -38,5 +47,10 @@ export class AuthorController {
   @Put(":id")
   update(@Param("id") id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
     return this.authorService.update(id, updateAuthorDto);
+  }
+
+  @Delete(":id")
+  delete(@Param("id") id: string) {
+    return this.authorService.delete(id);
   }
 }

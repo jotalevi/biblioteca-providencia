@@ -110,4 +110,19 @@ export class SaleService {
       throw err;
     }
   }
+
+  async delete(id: string): Promise<void> {
+    try {
+      const found = await this.saleRepository.findOne({
+        where: { id: id },
+      });
+      if (!found) {
+        throw new NotFoundException("Sale not found");
+      }
+      await this.saleRepository.delete(found);
+    } catch (err) {
+      this.logger.error(err);
+      throw err;
+    }
+  }
 }

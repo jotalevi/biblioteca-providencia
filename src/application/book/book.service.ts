@@ -101,4 +101,19 @@ export class BookService {
       throw err;
     }
   }
+
+  async delete(id: string): Promise<void> {
+    try {
+      const found = await this.bookRepository.findOne({
+        where: { id: id },
+      });
+      if (!found) {
+        throw new NotFoundException("Book not found");
+      }
+      await this.bookRepository.delete(found);
+    } catch (err) {
+      this.logger.error(err);
+      throw err;
+    }
+  }
 }

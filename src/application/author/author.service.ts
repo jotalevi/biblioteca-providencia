@@ -100,4 +100,19 @@ export class AuthorService {
       throw err;
     }
   }
+
+  async delete(id: string): Promise<void> {
+    try {
+      const found = await this.authorRepository.findOne({
+        where: { id: id },
+      });
+      if (!found) {
+        throw new NotFoundException("Author not found");
+      }
+      await this.authorRepository.delete(found);
+    } catch (err) {
+      this.logger.error(err);
+      throw err;
+    }
+  }
 }

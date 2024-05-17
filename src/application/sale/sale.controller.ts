@@ -1,5 +1,14 @@
 import { ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from "@nestjs/common";
 import { SaleService } from "./sale.service";
 import { CreateSaleDto } from "./sale.dto";
 
@@ -34,5 +43,10 @@ export class SaleController {
   @Put(":id")
   update(@Param("id") id: string, @Body("books") books: string[]) {
     return this.saleService.update(id, books);
+  }
+
+  @Delete(":id")
+  delete(@Param("id") id: string) {
+    return this.saleService.delete(id);
   }
 }
